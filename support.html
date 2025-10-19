@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>VibeWeight — App Support</title>
+    <meta name="description" content="Support page for the iOS app VibeWeight: help, contact, FAQs, and privacy policy." />
+    <meta name="color-scheme" content="light dark" />
+
+    <!-- Open Graph / Twitter -->
+    <meta property="og:title" content="VibeWeight — App Support" />
+    <meta property="og:description" content="Get help, contact support, read FAQs and privacy policy for VibeWeight." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="" />
+    <meta property="og:image" content="" />
+    <meta name="twitter:card" content="summary" />
+
+    <style>
+      :root{
+        --bg: #0b0c10;
+        --panel: #121318;
+        --text: #e8eaf0;
+        --muted: #a7adba;
+        --brand: #6aa6ff;
+        --accent: #6effc4;
+        --border: #20222b;
+      }
+      @media (prefers-color-scheme: light){
+        :root{
+          --bg: #ffffff;
+          --panel: #f7f7f9;
+          --text: #1c1f24;
+          --muted: #475569;
+          --brand: #1e66f5;
+          --accent: #059669;
+          --border: #e5e7eb;
+        }
+      }
+      * { box-sizing: border-box; }
+      html, body { height: 100%; }
+      body{
+        margin: 0;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+        line-height: 1.55;
+        color: var(--text);
+        background: radial-gradient(1200px 800px at 80% -10%, rgba(106,166,255,.12), transparent 60%),
+                    radial-gradient(900px 600px at -10% 110%, rgba(110,255,196,.10), transparent 60%),
+                    var(--bg);
+      }
+      a{ color: var(--brand); text-decoration: none; }
+      a:hover{ text-decoration: underline; }
+      .wrap{ max-width: 880px; margin: 0 auto; padding: 24px; }
+      header{ padding: 28px 0 12px; }
+      .app-title{ font-size: 28px; font-weight: 700; letter-spacing: .2px; margin: 0 0 6px; }
+      .tagline{ color: var(--muted); margin: 0; font-size: 16px; }
+      .panel{ background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin: 16px 0; }
+      .grid{ display: grid; gap: 14px; grid-template-columns: 1fr; }
+      @media (min-width: 820px){ .grid{ grid-template-columns: 1fr 1fr; } }
+      h2{ font-size: 20px; margin: 0 0 10px; }
+      h3{ font-size: 16px; margin: 14px 0 6px; }
+      ul{ margin: 8px 0 0 20px; }
+      .cta-row{ display:flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+      .btn{
+        display: inline-flex; align-items: center; gap: 8px; justify-content: center;
+        padding: 10px 14px; border-radius: 10px; font-weight: 600; border: 1px solid var(--border);
+        background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.02)); color: var(--text);
+      }
+      .btn.primary{ background: linear-gradient(180deg, var(--brand), #1656d8); color: #fff; border-color: transparent; }
+      .btn.secondary{ background: linear-gradient(180deg, #2a2f3a, #1b1f27); }
+      .muted{ color: var(--muted); }
+      footer{ color: var(--muted); font-size: 13px; padding: 20px 0 40px; }
+      code, .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+      .small{ font-size: 13px; }
+      .kbd{ padding: 2px 6px; border: 1px solid var(--border); border-bottom-width: 2px; border-radius: 6px; }
+      .divider{ border-top: 1px solid var(--border); margin: 18px 0; }
+      .sr-only{ position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header aria-labelledby="title">
+        <h1 id="title" class="app-title">VibeWeight — App Support</h1>
+        <p class="tagline">Find help, contact support, and read the privacy policy.</p>
+      </header>
+
+      <section class="panel" aria-labelledby="contact">
+        <h2 id="contact">Contact Support</h2>
+        <p>If you have questions or run into issues, reach out any time.</p>
+        <div class="cta-row">
+          <!-- TODO: replace with your real support email address -->
+          <a class="btn primary" href="mailto:chendacheng@gmail.com?subject=VibeWeight%20Support&body=Please%20describe%20your%20issue%20here.%20If%20possible%2C%20include%20steps%20to%20reproduce.">Email Support</a>
+          <!-- TODO: replace with your real App Store link -->
+          <a class="btn secondary" href="#" rel="noopener" target="_blank">View on App Store</a>
+        </div>
+        <p class="small muted">Tip: Include your iOS version and device model for faster help.</p>
+      </section>
+
+      <section class="grid" aria-label="Help and FAQs">
+        <div class="panel" aria-labelledby="quickstart">
+          <h2 id="quickstart">Quick Start</h2>
+          <ol>
+            <li>Open VibeWeight on your iPhone.</li>
+            <li>Explore the main screens and settings.</li>
+            <li>Adjust preferences to match your workflow.</li>
+          </ol>
+          <p class="small muted">Note: Replace these steps with your actual app flow.</p>
+        </div>
+
+        <div class="panel" aria-labelledby="faq">
+          <h2 id="faq">Frequently Asked Questions</h2>
+          <h3>How do I report a bug or request a feature?</h3>
+          <p>Send an email via the button above with a clear description and, if possible, steps to reproduce.</p>
+          <h3>Does VibeWeight work offline?</h3>
+          <p>Behavior may vary depending on features. Please contact support with your use case if you’re unsure.</p>
+          <h3>Where can I find the latest updates?</h3>
+          <p>Check the App Store listing for release notes. If you need details, reach out.</p>
+          <p class="small muted">Customize these FAQs to reflect your app’s specifics.</p>
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="troubleshooting">
+        <h2 id="troubleshooting">Troubleshooting</h2>
+        <ul>
+          <li>Force-quit and reopen the app, then try again.</li>
+          <li>Ensure you’re on the latest version of VibeWeight from the App Store.</li>
+          <li>Restart your iPhone if the issue persists.</li>
+        </ul>
+        <p class="small muted">Add any app-specific tips you recommend users try.</p>
+      </section>
+
+      <section class="panel" aria-labelledby="privacy">
+        <h2 id="privacy">Privacy Policy (Summary)</h2>
+        <p>This is a high-level summary. If your app collects data, describe it clearly below. If not, state that no personal data is collected. Replace all placeholder text before publishing.</p>
+        <div class="divider" role="presentation"></div>
+        <h3>Information Collection</h3>
+        <p><em>Placeholder:</em> Describe what, if any, information VibeWeight collects (e.g., app usage diagnostics, crash reports). Include whether any data is personally identifiable.</p>
+        <h3>Use of Information</h3>
+        <p><em>Placeholder:</em> Explain how collected information is used (e.g., improving stability, feature development). If you do not collect any data, state that here.</p>
+        <h3>Data Sharing</h3>
+        <p><em>Placeholder:</em> State whether data is shared with third parties. If using analytics or crash reporting, name the providers and link to their policies.</p>
+        <h3>Data Retention</h3>
+        <p><em>Placeholder:</em> Explain how long data is retained and how users can request deletion, if applicable.</p>
+        <h3>Contact</h3>
+        <p>For privacy-related questions, contact <a href="mailto:chendacheng@gmail.com">chendacheng@gmail.com</a>.</p>
+        <p class="small muted">Consider publishing a dedicated privacy URL if the App Store requires a separate link.</p>
+      </section>
+
+      <section class="panel" aria-labelledby="legal">
+        <h2 id="legal">Legal</h2>
+        <ul>
+          <li>By using VibeWeight you agree to the app’s terms and policies.</li>
+          <li>All trademarks are property of their respective owners.</li>
+        </ul>
+      </section>
+
+      <footer>
+        <div>© <span id="year"></span> VibeWeight</div>
+        <div class="small">Support • FAQs • Privacy</div>
+      </footer>
+    </div>
+
+    <script>
+      // Update year
+      document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+  </body>
+  </html>
