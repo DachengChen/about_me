@@ -14,24 +14,38 @@
   const pages = [
     {
       title: "Welcome",
-      subtitle: "Scroll, swipe, or use arrow keys",
-      gradient: ["#0b2b2e", "#1f5d58"],
-      accent: "#f3c278",
-      text: "#f9f5ea",
+      subtitle: "A new page unfolds",
+      gradient: ["#0b1e3f", "#1e5f8f"],
+      accent: "#f6c56f",
+      text: "#f9f4e8",
     },
     {
-      title: "Portfolio",
-      subtitle: "Ideas shaped into scenes",
-      gradient: ["#2c1b1a", "#8b3a2e"],
-      accent: "#f1d7a4",
+      title: "Create",
+      subtitle: "Ideas become form",
+      gradient: ["#3a1a1a", "#b34b2f"],
+      accent: "#f4d3a1",
       text: "#fff1de",
     },
     {
+      title: "Connect",
+      subtitle: "Let’s build something together",
+      gradient: ["#102c2a", "#2f8f7c"],
+      accent: "#9de3c2",
+      text: "#e8fff6",
+    },
+    {
+      title: "Vibe",
+      subtitle: "Coding for fun",
+      gradient: ["#2a1020", "#8e2f5d"],
+      accent: "#f8c1d9",
+      text: "#ffeef6",
+    },
+    {
       title: "Contact",
-      subtitle: "hello@example.com",
-      gradient: ["#0f2028", "#386c63"],
-      accent: "#9bd5c0",
-      text: "#e6f4f1",
+      subtitle: "chendacheng@gmail.com",
+      gradient: ["#111a21", "#3b5463"],
+      accent: "#a9d1e6",
+      text: "#edf6fb",
     },
   ];
 
@@ -90,13 +104,27 @@
     </linearGradient>
   </defs>
   <rect width="100%" height="100%" fill="url(#bg)" />
-  <circle cx="${Math.round(width * 0.84)}" cy="${Math.round(height * 0.2)}" r="${Math.round(shortSide * 0.2)}" fill="${page.accent}" fill-opacity="0.16" />
-  <circle cx="${Math.round(width * 0.16)}" cy="${Math.round(height * 0.76)}" r="${Math.round(shortSide * 0.28)}" fill="${page.accent}" fill-opacity="0.12" />
-  <g fill="${page.text}" font-family="Georgia, Times New Roman, serif" text-anchor="middle">
+  <circle cx="${Math.round(width * 0.84)}" cy="${Math.round(
+      height * 0.2
+    )}" r="${Math.round(shortSide * 0.2)}" fill="${
+      page.accent
+    }" fill-opacity="0.16" />
+  <circle cx="${Math.round(width * 0.16)}" cy="${Math.round(
+      height * 0.76
+    )}" r="${Math.round(shortSide * 0.28)}" fill="${
+      page.accent
+    }" fill-opacity="0.12" />
+  <g fill="${
+    page.text
+  }" font-family="Georgia, Times New Roman, serif" text-anchor="middle">
     <text x="50%" y="${titleY}" font-size="${titleSize}" font-weight="700" letter-spacing="2">
       ${escapeXML(page.title)}
     </text>
-    ${subtitleSpans ? `<text x="50%" y="${subtitleY}" font-size="${subSize}" font-weight="500" opacity="0.82">${subtitleSpans}</text>` : ""}
+    ${
+      subtitleSpans
+        ? `<text x="50%" y="${subtitleY}" font-size="${subSize}" font-weight="500" opacity="0.82">${subtitleSpans}</text>`
+        : ""
+    }
   </g>
 </svg>`;
 
@@ -183,7 +211,9 @@
   const setFace = (face, pageIndex, metrics, col, row) => {
     face.style.backgroundImage = `url("${pageImages[pageIndex]}")`;
     face.style.backgroundSize = `${metrics.gridW}px ${metrics.gridH}px`;
-    face.style.backgroundPosition = `${-col * metrics.tileW}px ${-row * metrics.tileH}px`;
+    face.style.backgroundPosition = `${-col * metrics.tileW}px ${
+      -row * metrics.tileH
+    }px`;
   };
 
   const paintFaces = (frontIndex, backIndex) => {
