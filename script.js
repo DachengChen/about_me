@@ -154,7 +154,7 @@
 
         const seed = row * cols + col + 1;
         const delay = Math.floor(seededRandom(seed) * 250);
-        const duration = Math.floor(500 + seededRandom(seed + 999) * 500);
+        const duration = Math.floor(800 + seededRandom(seed + 999) * 700);
 
         tiles.push({ row, col, card, front, back, delay, duration });
       }
