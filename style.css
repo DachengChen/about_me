@@ -56,12 +56,12 @@ body {
   transform-style: preserve-3d;
   transition-property: transform;
   transition-timing-function: var(--flip-ease);
-  transform: rotateY(0deg);
+  transform: rotateX(0deg);
   will-change: transform;
 }
 
 .card.flipped {
-  transform: rotateY(180deg);
+  transform: rotateX(var(--flip-angle, 180deg));
 }
 
 .face {
@@ -72,7 +72,7 @@ body {
 }
 
 .back {
-  transform: rotateY(180deg);
+  transform: rotateX(180deg);
 }
 
 #fade {

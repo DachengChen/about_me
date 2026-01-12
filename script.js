@@ -225,6 +225,8 @@
       return;
     }
 
+    const direction = targetIndex > currentIndex ? 180 : -180;
+    grid.style.setProperty("--flip-angle", `${direction}deg`);
     setAppBackground(targetIndex);
 
     if (reducedMotion) {
