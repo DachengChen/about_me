@@ -299,8 +299,14 @@
     window.setTimeout(() => finishFlip(targetIndex), maxTime + 50);
   };
 
-  const goNext = () => goToPage(currentIndex + 1);
-  const goPrev = () => goToPage(currentIndex - 1);
+  const goNext = () => {
+    const nextIndex = (currentIndex + 1) % pages.length;
+    goToPage(nextIndex);
+  };
+  const goPrev = () => {
+    const prevIndex = (currentIndex - 1 + pages.length) % pages.length;
+    goToPage(prevIndex);
+  };
 
   const handleWheel = (event) => {
     event.preventDefault();
