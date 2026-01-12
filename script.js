@@ -1,7 +1,16 @@
 (() => {
   let cols = 24;
   let rows = 16;
-  const targetTileSize = 128;
+  const getTargetTileSize = () => {
+    const shortSide = Math.min(window.innerWidth, window.innerHeight);
+    const minSize = 64;
+    const maxSize = 256;
+    const minSide = 600;
+    const maxSide = 1400;
+    const ratio = (shortSide - minSide) / Math.max(1, maxSide - minSide);
+    const t = Math.min(1, Math.max(0, ratio));
+    return Math.round(minSize + (maxSize - minSize) * t);
+  };
   const pages = [
     {
       title: "Welcome",
@@ -103,12 +112,15 @@
   const calculateGrid = () => {
     const width = window.innerWidth;
     const height = window.innerHeight;
-    const nextCols = Math.max(1, Math.round(width / targetTileSize));
-    const nextRows = Math.max(1, Math.round(height / targetTileSize));
+    const targetTileSize = getTargetTileSize();
+    const approxCols = Math.max(1, Math.round(width / targetTileSize));
+    const approxRows = Math.max(1, Math.round(height / targetTileSize));
     const tileSize = Math.max(
       1,
-      Math.floor(Math.min(width / nextCols, height / nextRows))
+      Math.ceil(Math.max(width / approxCols, height / approxRows))
     );
+    const nextCols = Math.max(1, Math.ceil(width / tileSize));
+    const nextRows = Math.max(1, Math.ceil(height / tileSize));
     const gridW = tileSize * nextCols;
     const gridH = tileSize * nextRows;
 
@@ -212,6 +224,8 @@
     if (targetIndex === currentIndex) {
       return;
     }
+
+    setAppBackground(targetIndex);
 
     if (reducedMotion) {
       const { gridW, gridH } = getMetrics();
@@ -319,6 +333,15 @@
   const setStageSize = (width, height) => {
     stage.style.width = `${width}px`;
     stage.style.height = `${height}px`;
+    const overflowX = Math.max(0, width - window.innerWidth);
+    const overflowY = Math.max(0, height - window.innerHeight);
+    const offsetX = Math.floor(overflowX / 2);
+    const offsetY = Math.floor(overflowY / 2);
+
+    stage.style.marginLeft = `${-offsetX}px`;
+    stage.style.marginRight = `${-offsetX}px`;
+    stage.style.marginTop = `${-offsetY}px`;
+    stage.style.marginBottom = `${-offsetY}px`;
   };
 
   const applyLayout = (forceRebuild = false) => {
