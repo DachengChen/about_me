@@ -1,12 +1,7 @@
 (() => {
   let cols = 24;
   let rows = 16;
-  const gridPresets = [
-    { min: 1200, cols: 24, rows: 16 },
-    { min: 900, cols: 18, rows: 12 },
-    { min: 700, cols: 12, rows: 8 },
-    { min: 0, cols: 9, rows: 6 },
-  ];
+  const targetTileSize = 64;
   const pages = [
     {
       title: "Welcome",
@@ -97,21 +92,46 @@
     return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
   };
 
-  const pickGridPreset = () => {
-    const shortSide = Math.min(window.innerWidth, window.innerHeight);
-    return gridPresets.find((preset) => shortSide >= preset.min);
+  const calculateGrid = () => {
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    const estimateCols = Math.max(1, Math.round(width / targetTileSize));
+    const search = 6;
+    let best = null;
+
+    for (
+      let candidateCols = Math.max(1, estimateCols - search);
+      candidateCols <= estimateCols + search;
+      candidateCols += 1
+    ) {
+      const candidateRows = Math.max(
+        1,
+        Math.round((candidateCols * height) / width)
+      );
+      const tileW = width / candidateCols;
+      const tileH = height / candidateRows;
+      const squareError = Math.abs(tileW - tileH);
+      const sizeError = Math.abs(tileW - targetTileSize) + Math.abs(tileH - targetTileSize);
+      const score = squareError * 4 + sizeError;
+
+      if (!best || score < best.score) {
+        best = { cols: candidateCols, rows: candidateRows, score };
+      }
+    }
+
+    return best;
   };
 
-  const updateGridPreset = () => {
-    const preset = pickGridPreset();
-    if (!preset) {
+  const updateGridSize = () => {
+    const best = calculateGrid();
+    if (!best) {
       return false;
     }
-    if (preset.cols === cols && preset.rows === rows) {
+    if (best.cols === cols && best.rows === rows) {
       return false;
     }
-    cols = preset.cols;
-    rows = preset.rows;
+    cols = best.cols;
+    rows = best.rows;
     return true;
   };
 
@@ -148,20 +168,6 @@
       }
     }
     grid.appendChild(fragment);
-  };
-
-  const setGridSize = () => {
-    const tileSize = Math.min(
-      window.innerWidth / cols,
-      window.innerHeight / rows
-    );
-    const gridW = tileSize * cols;
-    const gridH = tileSize * rows;
-
-    grid.style.width = `${gridW}px`;
-    grid.style.height = `${gridH}px`;
-    fade.style.width = `${gridW}px`;
-    fade.style.height = `${gridH}px`;
   };
 
   const getMetrics = () => {
@@ -329,12 +335,11 @@
   };
 
   const applyLayout = (forceRebuild = false) => {
-    const presetChanged = updateGridPreset();
-    if (forceRebuild || presetChanged) {
+    const gridChanged = updateGridSize();
+    if (forceRebuild || gridChanged) {
       isAnimating = false;
       buildGrid();
     }
-    setGridSize();
     renderPageImages();
     if (!isAnimating) {
       resetCards();
