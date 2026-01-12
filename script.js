@@ -1,7 +1,7 @@
 (() => {
   let cols = 24;
   let rows = 16;
-  const targetTileSize = 64;
+  const targetTileSize = 128;
   const pages = [
     {
       title: "Welcome",
@@ -26,6 +26,8 @@
     },
   ];
 
+  const app = document.getElementById("app");
+  const stage = document.getElementById("stage");
   const grid = document.getElementById("grid");
   const fade = document.getElementById("fade");
   const tiles = [];
@@ -92,47 +94,25 @@
     return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
   };
 
+  const setAppBackground = (pageIndex) => {
+    const page = pages[pageIndex];
+    app.style.background = `linear-gradient(135deg, ${page.gradient[0]}, ${page.gradient[1]})`;
+    app.style.backgroundColor = page.gradient[0];
+  };
+
   const calculateGrid = () => {
     const width = window.innerWidth;
     const height = window.innerHeight;
-    const estimateCols = Math.max(1, Math.round(width / targetTileSize));
-    const search = 6;
-    let best = null;
+    const nextCols = Math.max(1, Math.round(width / targetTileSize));
+    const nextRows = Math.max(1, Math.round(height / targetTileSize));
+    const tileSize = Math.max(
+      1,
+      Math.floor(Math.min(width / nextCols, height / nextRows))
+    );
+    const gridW = tileSize * nextCols;
+    const gridH = tileSize * nextRows;
 
-    for (
-      let candidateCols = Math.max(1, estimateCols - search);
-      candidateCols <= estimateCols + search;
-      candidateCols += 1
-    ) {
-      const candidateRows = Math.max(
-        1,
-        Math.round((candidateCols * height) / width)
-      );
-      const tileW = width / candidateCols;
-      const tileH = height / candidateRows;
-      const squareError = Math.abs(tileW - tileH);
-      const sizeError = Math.abs(tileW - targetTileSize) + Math.abs(tileH - targetTileSize);
-      const score = squareError * 4 + sizeError;
-
-      if (!best || score < best.score) {
-        best = { cols: candidateCols, rows: candidateRows, score };
-      }
-    }
-
-    return best;
-  };
-
-  const updateGridSize = () => {
-    const best = calculateGrid();
-    if (!best) {
-      return false;
-    }
-    if (best.cols === cols && best.rows === rows) {
-      return false;
-    }
-    cols = best.cols;
-    rows = best.rows;
-    return true;
+    return { cols: nextCols, rows: nextRows, gridW, gridH };
   };
 
   const buildGrid = () => {
@@ -216,6 +196,7 @@
 
   const finishFlip = (targetIndex) => {
     currentIndex = targetIndex;
+    setAppBackground(currentIndex);
     paintFaces(currentIndex, null);
 
     resetCards();
@@ -245,6 +226,7 @@
 
       window.setTimeout(() => {
         currentIndex = targetIndex;
+        setAppBackground(currentIndex);
         paintFaces(currentIndex, null);
         fade.style.opacity = "0";
 
@@ -334,14 +316,25 @@
     event.preventDefault();
   };
 
+  const setStageSize = (width, height) => {
+    stage.style.width = `${width}px`;
+    stage.style.height = `${height}px`;
+  };
+
   const applyLayout = (forceRebuild = false) => {
-    const gridChanged = updateGridSize();
+    const next = calculateGrid();
+    const gridChanged = next.cols !== cols || next.rows !== rows;
+    cols = next.cols;
+    rows = next.rows;
+
     if (forceRebuild || gridChanged) {
       isAnimating = false;
       buildGrid();
     }
+    setStageSize(next.gridW, next.gridH);
     renderPageImages();
     if (!isAnimating) {
+      setAppBackground(currentIndex);
       resetCards();
       paintFaces(currentIndex, null);
     }
