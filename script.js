@@ -1,6 +1,12 @@
 (() => {
-  const cols = 24;
-  const rows = 16;
+  let cols = 24;
+  let rows = 16;
+  const gridPresets = [
+    { min: 1200, cols: 24, rows: 16 },
+    { min: 900, cols: 18, rows: 12 },
+    { min: 700, cols: 12, rows: 8 },
+    { min: 0, cols: 9, rows: 6 },
+  ];
   const pages = [
     {
       title: "Welcome",
@@ -91,7 +97,30 @@
     return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
   };
 
+  const pickGridPreset = () => {
+    const shortSide = Math.min(window.innerWidth, window.innerHeight);
+    return gridPresets.find((preset) => shortSide >= preset.min);
+  };
+
+  const updateGridPreset = () => {
+    const preset = pickGridPreset();
+    if (!preset) {
+      return false;
+    }
+    if (preset.cols === cols && preset.rows === rows) {
+      return false;
+    }
+    cols = preset.cols;
+    rows = preset.rows;
+    return true;
+  };
+
   const buildGrid = () => {
+    grid.innerHTML = "";
+    tiles.length = 0;
+    grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+    grid.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
+
     const fragment = document.createDocumentFragment();
     for (let row = 0; row < rows; row += 1) {
       for (let col = 0; col < cols; col += 1) {
@@ -119,6 +148,20 @@
       }
     }
     grid.appendChild(fragment);
+  };
+
+  const setGridSize = () => {
+    const tileSize = Math.min(
+      window.innerWidth / cols,
+      window.innerHeight / rows
+    );
+    const gridW = tileSize * cols;
+    const gridH = tileSize * rows;
+
+    grid.style.width = `${gridW}px`;
+    grid.style.height = `${gridH}px`;
+    fade.style.width = `${gridW}px`;
+    fade.style.height = `${gridH}px`;
   };
 
   const getMetrics = () => {
@@ -157,15 +200,19 @@
     });
   };
 
-  const finishFlip = (targetIndex) => {
-    currentIndex = targetIndex;
-    paintFaces(currentIndex, null);
-
+  const resetCards = () => {
     tiles.forEach(({ card }) => {
       card.style.transitionDelay = "0ms";
       card.style.transitionDuration = "0ms";
       card.classList.remove("flipped");
     });
+  };
+
+  const finishFlip = (targetIndex) => {
+    currentIndex = targetIndex;
+    paintFaces(currentIndex, null);
+
+    resetCards();
 
     void grid.offsetHeight;
     isAnimating = false;
@@ -281,16 +328,25 @@
     event.preventDefault();
   };
 
-  const handleResize = () => {
+  const applyLayout = (forceRebuild = false) => {
+    const presetChanged = updateGridPreset();
+    if (forceRebuild || presetChanged) {
+      isAnimating = false;
+      buildGrid();
+    }
+    setGridSize();
     renderPageImages();
     if (!isAnimating) {
+      resetCards();
       paintFaces(currentIndex, null);
     }
   };
 
-  buildGrid();
-  renderPageImages();
-  paintFaces(currentIndex, null);
+  const handleResize = () => {
+    applyLayout();
+  };
+
+  applyLayout(true);
 
   grid.addEventListener("wheel", handleWheel, { passive: false });
   window.addEventListener("keydown", handleKeyDown);

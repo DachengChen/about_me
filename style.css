@@ -26,11 +26,12 @@ body {
   position: fixed;
   inset: 0;
   touch-action: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #grid {
-  width: 100vw;
-  height: 100vh;
   display: grid;
   grid-template-columns: repeat(24, 1fr);
   grid-template-rows: repeat(16, 1fr);
@@ -61,7 +62,6 @@ body {
   inset: 0;
   backface-visibility: hidden;
   background-repeat: no-repeat;
-  background-size: 100vw 100vh;
 }
 
 .back {
@@ -70,11 +70,12 @@ body {
 
 #fade {
   position: absolute;
-  inset: 0;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   opacity: 0;
   pointer-events: none;
   background-repeat: no-repeat;
-  background-size: 100vw 100vh;
   transition: opacity 350ms ease;
 }
 
