@@ -11,43 +11,57 @@
     const t = Math.min(1, Math.max(0, ratio));
     return Math.round(minSize + (maxSize - minSize) * t);
   };
-  const pages = [
-    {
-      title: "Welcome",
-      subtitle: "A new page unfolds",
-      gradient: ["#0b1e3f", "#1e5f8f"],
-      accent: "#f6c56f",
-      text: "#f9f4e8",
-    },
-    {
-      title: "Create",
-      subtitle: "Ideas become form",
-      gradient: ["#3a1a1a", "#b34b2f"],
-      accent: "#f4d3a1",
-      text: "#fff1de",
-    },
-    {
-      title: "Connect",
-      subtitle: "Let’s build something together",
-      gradient: ["#102c2a", "#2f8f7c"],
-      accent: "#9de3c2",
-      text: "#e8fff6",
-    },
-    {
-      title: "Vibe",
-      subtitle: "Coding for fun",
-      gradient: ["#2a1020", "#8e2f5d"],
-      accent: "#f8c1d9",
-      text: "#ffeef6",
-    },
-    {
-      title: "Contact",
-      subtitle: "chendacheng@gmail.com",
-      gradient: ["#111a21", "#3b5463"],
-      accent: "#a9d1e6",
-      text: "#edf6fb",
-    },
-  ];
+const pages = [
+  {
+    title: "Welcome",
+    subtitle: "A developer who enjoys building things",
+    gradient: ["#0b1e3f", "#1e5f8f"],
+    accent: "#f6c56f",
+    text: "#f9f4e8",
+  },
+  {
+    title: "Background",
+    subtitle: "Experience shaped by real-world systems",
+    gradient: ["#2a1b3d", "#5b2c83"],
+    accent: "#d7b9ff",
+    text: "#f6f0ff",
+  },
+  {
+    title: "Skills",
+    subtitle: "From backend logic to product thinking",
+    gradient: ["#102c2a", "#2f8f7c"],
+    accent: "#9de3c2",
+    text: "#e8fff6",
+  },
+  {
+    title: "Mindset",
+    subtitle: "Clean code, clear ideas",
+    gradient: ["#1b2430", "#4b6b88"],
+    accent: "#a9d1e6",
+    text: "#edf6fb",
+  },
+  {
+    title: "Projects",
+    subtitle: "Learning through building",
+    gradient: ["#3a1a1a", "#b34b2f"],
+    accent: "#f4d3a1",
+    text: "#fff1de",
+  },
+  {
+    title: "Collaboration",
+    subtitle: "Good communication matters",
+    gradient: ["#1a2a1f", "#3a7d44"],
+    accent: "#b8f2c0",
+    text: "#effff1",
+  },
+  {
+    title: "Contact",
+    subtitle: "chendacheng@gmail.com",
+    gradient: ["#111a21", "#3b5463"],
+    accent: "#a9d1e6",
+    text: "#edf6fb",
+  },
+];
 
   const app = document.getElementById("app");
   const stage = document.getElementById("stage");
