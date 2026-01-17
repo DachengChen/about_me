@@ -149,9 +149,8 @@ const pages = [
   };
 
   const setAppBackground = (pageIndex) => {
-    const page = pages[pageIndex];
-    app.style.background = `linear-gradient(135deg, ${page.gradient[0]}, ${page.gradient[1]})`;
-    app.style.backgroundColor = page.gradient[0];
+    app.style.background = "#000";
+    app.style.backgroundColor = "#000";
   };
 
   const calculateGrid = () => {
