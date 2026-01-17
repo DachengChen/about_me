@@ -72,6 +72,9 @@ const pages = [
   let currentIndex = 0;
   let isAnimating = false;
   let pageImages = [];
+  let pendingDirection = 0;
+  let wheelAccumulator = 0;
+  let wheelTimeoutId = null;
 
   const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
   let reducedMotion = mediaQuery.matches;
@@ -259,6 +262,11 @@ const pages = [
 
     void grid.offsetHeight;
     isAnimating = false;
+    if (pendingDirection !== 0) {
+      const direction = pendingDirection;
+      pendingDirection = 0;
+      requestNavigation(direction);
+    }
   };
 
   const goToPage = (targetIndex) => {
@@ -292,6 +300,11 @@ const pages = [
 
         window.setTimeout(() => {
           isAnimating = false;
+          if (pendingDirection !== 0) {
+            const direction = pendingDirection;
+            pendingDirection = 0;
+            requestNavigation(direction);
+          }
         }, 360);
       }, 360);
       return;
@@ -322,34 +335,57 @@ const pages = [
     goToPage(prevIndex);
   };
 
-  const handleWheel = (event) => {
-    event.preventDefault();
-    if (isAnimating) {
+  const requestNavigation = (direction) => {
+    if (direction === 0) {
       return;
     }
-    const threshold = 40;
-    if (event.deltaY > threshold) {
+    if (isAnimating) {
+      pendingDirection = direction;
+      return;
+    }
+    if (direction > 0) {
       goNext();
-    } else if (event.deltaY < -threshold) {
+    } else {
       goPrev();
     }
   };
 
-  const handleKeyDown = (event) => {
-    if (isAnimating) {
-      return;
+  const handleWheel = (event) => {
+    event.preventDefault();
+    const threshold = 40;
+    const delta =
+      event.deltaMode === 1
+        ? event.deltaY * 16
+        : event.deltaMode === 2
+          ? event.deltaY * window.innerHeight
+          : event.deltaY;
+    wheelAccumulator += delta;
+    if (Math.abs(wheelAccumulator) >= threshold) {
+      requestNavigation(wheelAccumulator > 0 ? 1 : -1);
+      wheelAccumulator = 0;
     }
+    if (wheelTimeoutId !== null) {
+      window.clearTimeout(wheelTimeoutId);
+    }
+    wheelTimeoutId = window.setTimeout(() => {
+      wheelAccumulator = 0;
+      wheelTimeoutId = null;
+    }, 160);
+  };
+
+  const handleKeyDown = (event) => {
     if (event.key === "ArrowDown" || event.key === "PageDown") {
       event.preventDefault();
-      goNext();
+      requestNavigation(1);
     } else if (event.key === "ArrowUp" || event.key === "PageUp") {
       event.preventDefault();
-      goPrev();
+      requestNavigation(-1);
     }
   };
 
   let touchStartY = 0;
   let touchStartX = 0;
+  let suppressClick = false;
 
   const handleTouchStart = (event) => {
     if (event.touches.length !== 1) {
@@ -360,7 +396,7 @@ const pages = [
   };
 
   const handleTouchEnd = (event) => {
-    if (isAnimating || event.changedTouches.length !== 1) {
+    if (event.changedTouches.length !== 1) {
       return;
     }
     const endY = event.changedTouches[0].clientY;
@@ -368,18 +404,39 @@ const pages = [
     const deltaY = touchStartY - endY;
     const deltaX = touchStartX - endX;
     const minDistance = 50;
+    const tapDistance = 10;
 
     if (Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > minDistance) {
+      suppressClick = true;
+      window.setTimeout(() => {
+        suppressClick = false;
+      }, 360);
       if (deltaY > 0) {
-        goNext();
+        requestNavigation(1);
       } else {
-        goPrev();
+        requestNavigation(-1);
       }
+    } else if (
+      Math.abs(deltaY) < tapDistance &&
+      Math.abs(deltaX) < tapDistance
+    ) {
+      suppressClick = true;
+      window.setTimeout(() => {
+        suppressClick = false;
+      }, 360);
+      requestNavigation(1);
     }
   };
 
   const handleTouchMove = (event) => {
     event.preventDefault();
+  };
+
+  const handleClick = () => {
+    if (suppressClick) {
+      return;
+    }
+    requestNavigation(1);
   };
 
   const setStageSize = (width, height) => {
@@ -426,5 +483,6 @@ const pages = [
   grid.addEventListener("touchstart", handleTouchStart, { passive: true });
   grid.addEventListener("touchend", handleTouchEnd);
   grid.addEventListener("touchmove", handleTouchMove, { passive: false });
+  grid.addEventListener("click", handleClick);
   window.addEventListener("resize", handleResize);
 })();
